@@ -180,6 +180,11 @@ class LessWrongBook(object):
     html.append(head)
     html.append(body)
 
+    # Meta tags.
+    content_type = doc.new_tag("meta", content="text/html; charset=utf-8")
+    content_type["http-equiv"] = "Content-Type"
+    head.append(content_type)
+
     # CSS files.
     css_kwargs = {"rel": "stylesheet",
                   "type": "text/css"}
