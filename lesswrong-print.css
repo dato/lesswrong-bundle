@@ -1,0 +1,219 @@
+/*
+ * CSS file for the PDF version of the Less Wrong sequences.
+ * Copyright (c) 2012-2013 Dato Simó (dato@net.com.org.es)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation, version 2 [see COPYING.GPLv2].
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+@page {
+  size: 15cm 22.5cm;
+  margin: 2cm;
+}
+
+:root {
+    font-size: 11pt;
+    font-family: "Hoefler Text", "Georgia", serif;
+    prince-pdf-page-mode: show-bookmarks;
+}
+
+@font-face {
+    src: local("Hoefler Text");
+    font-family: "Hoefler Text";
+}
+
+div.sequence {
+    counter-reset: article;
+    counter-reset: subsequence;
+    counter-increment: sequence;
+    page-break-before: right;
+    prince-page-group: start;
+}
+
+div.subsequence {
+    counter-increment: subsequence;
+    page-break-before: right;
+    prince-page-group: start;
+}
+
+div.article {
+    counter-increment: article;
+    page-break-before: right;  /* Only for the first article in a sequence,
+                                * see below. */
+    prince-page-group: start;
+}
+
+div.article ~ div.article {
+    /*
+     * This applies to all but the first article of a sequence: no need to
+     * break on a right page, just a simple new page is enough.
+     */
+    page-break-before: always;
+    /*
+     * (Implementation note: initially this was implemented with:
+     *
+     *   div.sequence > div.article:first-of-type {
+     *     page-break-before: right;
+     *   }
+     *
+     * but that broke as soon as the "description" <div> for sequences was
+     * introduced [because `div.article:first-of-type` is "the first <div>
+     * element IF it's of class 'article'", NOT "the first <div> element OF
+     * class 'article'"].)
+     */
+}
+
+div.description {
+    font-size: 0.9em;
+    text-align: right;
+    font-style: italic;
+    width: 70%;
+    float: right;
+}
+
+div.description em {
+    font-style: normal;
+}
+
+h1, h2, h3 {
+    /* Don't let deafult bookmark levels mess with our usage below. */
+    prince-bookmark-level: none;
+}
+
+div.sequence > h2 {
+    text-align: right;
+    margin: 7cm 0 0.5cm;
+    font-size: 1.375em;
+    string-set: sequence-title
+        /* counter(sequence, upper-roman) ". " */ content();
+    prince-bookmark-level: 1;
+    prince-bookmark-state: open;
+    prince-bookmark-label:
+        "Part " counter(sequence, upper-roman) " - " content();
+}
+
+div.sequence > h2::before {
+    content: "Part " counter(sequence, upper-roman) "\A";
+    white-space: pre-line;  /* Allow "\A" to behave as <br/>. */
+}
+
+div.subsequence > h2 {
+    text-align: right;
+    margin: 7cm 0 0.5cm;
+    font-size: 1.375em;
+    prince-bookmark-level: 2; /* Articles have level 2 too, keep it that way? */
+    prince-bookmark-state: open;
+    prince-bookmark-label:
+        counter(subsequence, upper-alpha) ". " content();
+}
+
+/* Article titles are inside a <span> to avoid including the link
+ * to the web article in their contents.
+ */
+div.article > h3 > span.title {
+    string-set: article-title
+        /* counter(sequence, upper-roman) "-" counter(article) ". " */
+	content();
+    prince-bookmark-level: 2;
+    prince-bookmark-state: open;
+    prince-bookmark-label: counter(article) ". " content();
+}
+
+div.article > h3 > span.title::before {
+    content: counter(article) ". ";
+}
+
+div.article > h3 > a {
+    font-size: 50%;
+    font-weight: bold;
+    vertical-align: super;
+    margin-left: 0.3em;
+}
+
+div.article > p {
+    margin: 0 0 2pt;
+    text-indent: 1.5em;
+    text-align: justify;
+    hyphens: auto;
+    hyphenate-lines: 1;
+    hyphenate-patterns: url("/usr/local/texlive/2011/texmf/tex/generic/hyphen/hyphen.tex");
+}
+
+div.article > p:first-of-type {
+    text-indent: 0;
+}
+
+div.article > p.web-navigation {
+    display: none;  /* The Python source marks with 'web-navigation' the
+                     * "Part of the Foo sequence" and "Next post:" blurbs,
+		     * which are not needed in the PDF version.
+		     */
+}
+
+/*
+div.article > p > em:first-child:only-child {
+    display: block;
+    margin: 0.5em 1.5em;
+    text-indent: 0;
+}
+*/
+
+@page :blank {
+  @top-right { content: normal }
+  @top-left { content: normal }
+  @bottom-right { content: normal }
+  @bottom-left { content: normal }
+}
+
+@page :first {
+  @top-right { content: normal }
+  @top-left { content: normal }
+  @bottom-right { content: normal }
+  @bottom-left { content: normal }
+}
+
+@page :left {
+  @top-right {
+    content: string(sequence-title);
+    vertical-align: middle;
+    font-size: 8pt;
+    font-variant: small-caps;
+    color: #666;
+  }
+  @top-left {
+    content: counter(page);
+    vertical-align: middle;
+    /* margin: 0.8em 0; */
+    font-size: 8pt;
+    color: #666;
+  }
+}
+
+@page :right {
+  @top-left {
+    content: string(article-title);
+    vertical-align: middle;
+    /* margin: 0.8em 0; */
+    font-size: 8pt;
+    font-variant: small-caps;
+    color: #666;
+  }
+  @top-right {
+    content: counter(page);
+    vertical-align: middle;
+    /* margin: 0.8em 0; */
+    font-size: 8pt;
+    color: #666;
+  }
+}
+
