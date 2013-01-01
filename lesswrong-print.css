@@ -90,6 +90,16 @@ h1, h2, h3 {
     prince-bookmark-level: none;
 }
 
+div.cover > h1 {
+    text-align: center;
+    font-size: 1.75em;
+    margin: 4cm 0 0.5cm;
+}
+
+div.cover > div.author {
+    text-align: center;
+}
+
 div.sequence > h2 {
     text-align: right;
     margin: 7cm 0 0.5cm;

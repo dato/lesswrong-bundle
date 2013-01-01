@@ -153,6 +153,22 @@ except ImportError:
 else:
   HTML_PARSER = "lxml"
 
+HTML_SKELETON = """
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>LessWrong.com Sequences</title>
+  <meta name="author" content="Elizier Yudkowsky" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+  <div class="cover">
+    <h1>LessWrong.com Sequences</h1>
+    <div class="author">Elizier Yudkowsky</div>
+  </div>
+</body>
+</html>
+"""
 
 class Error(Exception):
   "Base exception for this module."
@@ -173,17 +189,9 @@ class LessWrongBook(object):
       return
 
     # HTML skeleton.
-    doc = bs4.BeautifulSoup("")
-    html = doc.new_tag("html", xmlns="http://www.w3.org/1999/xhtml")
-    head = doc.new_tag("head")
-    body = doc.new_tag("body")
-    html.append(head)
-    html.append(body)
-
-    # Meta tags.
-    content_type = doc.new_tag("meta", content="text/html; charset=utf-8")
-    content_type["http-equiv"] = "Content-Type"
-    head.append(content_type)
+    doc = bs4.BeautifulSoup(HTML_SKELETON)
+    head = doc.html.head
+    body = doc.html.body
 
     # CSS files.
     css_kwargs = {"rel": "stylesheet",
@@ -202,9 +210,7 @@ class LessWrongBook(object):
     with tempfile.NamedTemporaryFile(dir=".", prefix="lesswrong-seq_",
                                      suffix=".html", delete=False) as tmp:
       atexit.register(os.unlink, tmp.name)
-      tmp.write('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" '
-                '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n')
-      tmp.write(html.encode("UTF-8"))
+      tmp.write(doc.encode("UTF-8"))
 
     if self.args.save_html:
       html_file = self.args.save_html
