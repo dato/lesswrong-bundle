@@ -100,6 +100,23 @@ div.cover > div.author {
     text-align: center;
 }
 
+div.cover > div.generator {
+    font-size: 0.7em;
+    text-align: right;
+    font-style: italic;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
+div.generator > span#date-generated {
+    content: prince-script(datestamp);
+}
+
+div.generator > span#uuid {
+    content: prince-script(generateUUID);
+}
+
 div.sequence > h2 {
     text-align: right;
     margin: 7cm 0 0.5cm;
