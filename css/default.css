@@ -1,0 +1,30 @@
+div#content {
+    margin: 1em auto 2em;
+    max-width: 40em;
+}
+
+h1 {
+    font-size: 2em;
+    border-bottom: 3pt solid black;
+}
+
+p {
+    max-width: 90%;
+}
+
+a:link {
+    color: black;
+}
+
+a:visited {
+    color: #666;
+}
+
+div#author {
+    text-align: right;
+}
+
+div#author > a {
+    margin-right: 15%;
+    text-decoration: none;
+}

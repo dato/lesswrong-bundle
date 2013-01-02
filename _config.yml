@@ -1,0 +1,10 @@
+# Values from GitHub:
+safe: true
+lsi: false
+pygments: true
+
+# My options.
+markdown: rdiscount
+
+rdiscount:
+  extensions: [smart]
