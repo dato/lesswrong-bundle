@@ -1,5 +1,5 @@
 #! /usr/bin/python
-## Hey, Python: enccoding: utf-8
+## Hey, Python: encoding: utf-8
 #
 # Copyright (c) 2012-2013 Dato Simó (dato@net.com.org.es)
 #
@@ -57,12 +57,12 @@ ARTICLE_BLACKLIST = set([
 
 # TODO [important]: download images.
 
-# TODO: get rid of multiple <a id="more"> elements (they produce inoccuous
+# TODO: get rid of multiple <a id="more"> elements (they produce innocuous
 # warnings from PrinceXML).
 
 # TODO: the following articles appear in more than one sequence; if that's
 # correct, their ids need to be different (at the moment Prince complains); if
-# it's not correct, apply the suitable fix.
+# it's not correct or desired, apply the suitable fix.
 #
 #  /lw/lt/the_robbers_cave_experiment:
 #  /lw/m2/the_litany_against_gurus:
@@ -89,8 +89,8 @@ ARTICLE_BLACKLIST = set([
 #    #1: Seeing with Fresh Eyes
 #    #2: The Methaetics Sequence
 
-# TODO [maybe]: differenciate somehow between "important" vs. "skippable"
-# articles (bold and italics in the sequence pages in the wiki).
+# TODO [maybe]: differentiate somehow between "important" vs. "skippable"
+# articles (bold and italics in the sequence pages in the wiki, respectively).
 
 # TODO [maybe]: indicate sequence prerequisites somewhere?
 
