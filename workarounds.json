@@ -1,14 +1,14 @@
 {
   "http://yudkowsky.net/rational/the-simple-truth": [
     { "type": "no-xml-download" },
-    { "type": "skip",
-      "_notes": "TODO: No XML, needs to be parsed with BeautifulSoup directly."
+    { "type": "special-parser",
+      "parser": "yudkowsky.net"
     }
   ],
   "http://yudkowsky.net/rational/bayes": [
     { "type": "no-xml-download" },
-    { "type": "skip",
-      "_notes": "TODO: No XML, needs to be parsed with BeautifulSoup directly."
+    { "type": "special-parser",
+      "parser": "yudkowsky.net"
     }
   ],
   "http://lesswrong.com/lw/lw/reversed_stupidity_is_not_intelligence/": [

@@ -187,6 +187,10 @@ div.article > p.web-navigation {
 		     */
 }
 
+div#yudkowsky-rational-bayes > form {
+    display: none;
+}
+
 /*
 div.article > p > em:first-child:only-child {
     display: block;

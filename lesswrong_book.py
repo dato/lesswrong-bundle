@@ -32,8 +32,6 @@ Optional libraries:
 See ParseArgs() or --help for options.
 """
 
-# TODO [top item]: fix TODO items in workarounds.json.
-
 # TODO [important]: get the PDF output reviewed / get feedback on any glaring
 # mistakes or omissions.
 
@@ -430,6 +428,28 @@ Please see below for the full listing of options.""")
         article_id = re.sub(r"^https?://lesswrong.com/", "", link, re.I)
         html_contents = str(
             big_soup.select('div[itemprop="description"] > div')[0])
+
+      elif parser_type == "yudkowsky.net":
+        big_soup = bs4.BeautifulSoup(contents, HTML_PARSER)
+        h1 = big_soup.find("h1")
+        div = big_soup.new_tag("div")
+
+        title = h1.string
+        link = url
+        article_id = re.sub(r"^https?://(yudkowsky).net(/.+)", r"\1\2", link)
+
+        for tag in list(h1.next_siblings):  # XXX Why is list() needed here?!
+          if (isinstance(tag, bs4.element.Tag)
+              and tag.name == "ul"
+              and "share" in tag.get("class", [])):
+            break
+          else:
+            div.append(tag)
+
+        html_contents = str(div)
+
+      else:
+        raise Error("unknown special parser %r" % parser_type)
 
       if HTML_PARSER == "html.parser":
         # There is a problem with HTMLParser's handling of unclosed <br> tags:
