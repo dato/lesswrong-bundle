@@ -26,5 +26,6 @@
       ],
       "_notes": "Embeded control sequences (^K/^N). Possible follow-up TODO: contact Yudkowsky or an admin about fixing the source."
     }
-  ]
+  ],
+  "_modeline": " vim: set wrap showbreak=: "
 }
