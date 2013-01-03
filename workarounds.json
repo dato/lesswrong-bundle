@@ -17,8 +17,13 @@
     }
   ],
   "http://lesswrong.com/lw/nu/taboo_your_words/": [
-    { "type": "skip",
-      "_notes": "Embeded control sequences (^K/^N), XML parser barfs."
+    {
+      "type": "apply-regex-sub",
+      "regex-pairs": [
+        ["di\\x0b(ff)?", "diff"],
+        ["di\\x0e(cult)", "difficult"]
+      ],
+      "_notes": "Embeded control sequences (^K/^N). Possible follow-up TODO: contact Yudkowsky or an admin about fixing the source."
     }
   ]
 }

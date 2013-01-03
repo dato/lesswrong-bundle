@@ -355,7 +355,16 @@ Please see below for the full listing of options.""")
       else:
         logging.debug("Processing %s", url)
         safe_url = urllib.quote(url, safe="")
-        yield os.path.join(seq_dir, safe_url)
+        contents = open(os.path.join(seq_dir, safe_url)).read()
+        yield self._ApplyContentFixes(url, contents)
+
+  def _ApplyContentFixes(self, url, contents):
+    for fix in self.fixes.get(url, []):
+      if fix["type"] == "apply-regex-sub":
+        for regex, repl in fix["regex-pairs"]:
+          contents = re.sub(regex.encode("utf-8"), repl.encode("utf-8"),
+                            contents)
+    return contents
 
   def SequenceToHtml(self, seq_obj):
     seq = self._CreateSeqDiv(seq_obj, kind="sequence")
@@ -397,8 +406,8 @@ Please see below for the full listing of options.""")
     return seq
 
   def _AddArticles(self, seq, seq_obj):
-    for f in self._IterSeqFiles(seq_obj):
-      item = ET.parse(f).getroot().find("./channel/item")
+    for contents in self._IterSeqFiles(seq_obj):
+      item = ET.fromstring(contents).find("./channel/item")
       title = smartyPants(item.find("title").text)
       link = item.find("link").text
       article_id = re.sub(r"^https?://lesswrong.com/", "",
