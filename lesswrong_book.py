@@ -448,7 +448,7 @@ Please see below for the full listing of options.""")
 
       article = soup.find("div")
       article["class"] = "article"
-      article["id"] = article_id
+      article["id"] = article_id.replace('/', '-')
 
       self._MassageArticleText(article)
       seq.append(article)
