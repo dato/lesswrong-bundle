@@ -32,23 +32,7 @@ Optional libraries:
 See ParseArgs() or --help for options.
 """
 
-# TODO [top item]: fix breakage with the following articles:
-ARTICLE_BLACKLIST = set([
-    # This one has some embedded control sequences (^K, ^N) where ff/ffi
-    # ligatures (or plain characters) should be, and that makes the XML parser
-    # barf. Can be fixed by implementing support for article diffs. (Possible
-    # follow-up TODO: contact Yudkowsky about getting rid of those control
-    # sequences.)
-    "http://lesswrong.com/lw/nu/taboo_your_words/",
-    # This one has malformed XML: the HTML body of the article is not properly
-    # escaped in the XML version.
-    "http://lesswrong.com/lw/lw/reversed_stupidity_is_not_intelligence/",
-    # These two are not lesswrong.com articles, but the current code always
-    # expects XML versions of the articles. (They just need to be parsed with
-    # BeautifulSoup directly).
-    "http://yudkowsky.net/rational/the-simple-truth",
-    "http://yudkowsky.net/rational/bayes",
-])
+# TODO [top item]: fix TODO items in workarounds.json.
 
 # TODO [important]: get the PDF output reviewed / get feedback on any glaring
 # mistakes or omissions.
@@ -166,6 +150,7 @@ class LessWrongBook(object):
                         format="%(levelname)s: %(message)s", stream=sys.stdout)
 
     self.ParseSeqList()
+    self.LoadWorkarounds()
     self.DownloadHtml()
 
     if self.args.download_only:
@@ -288,25 +273,24 @@ Please see below for the full listing of options.""")
         "--check-last-modified", action="store_true",
         help="check Last-Modified header when using items from the HTML cache")
 
+    parser.add_argument(
+        "--workarounds", metavar="PATH", default="workarounds.json",
+        help="workarounds to apply to some articles to be able to parse them")
+
     return parser.parse_args()
 
   def ParseSeqList(self):
     with open(self.args.sequence_file) as sf:
       self.seqs = json.load(sf)
 
-    # For LessWrong articles under /lw, we retrieve their XML version, because
-    # later on it's easier to extract the contents from that version.
-    for seq_obj in self.seqs:
-      for l in ([seq_obj.get("articles")] +
-                [ss["articles"] for ss in seq_obj.get("subsequences", [])]):
-        if l is not None:
-          l[:] = [os.path.join(url, ".xml") if self._IsLwRedditUrl(url) else url
-                  for url in l
-                  if url not in ARTICLE_BLACKLIST]
+  def LoadWorkarounds(self):
+    with open(self.args.workarounds) as wf:
+      self.fixes = json.load(wf)
 
-  @staticmethod
-  def _IsLwRedditUrl(url):
-    return url.startswith("http://lesswrong.com/lw/")
+  def _GetFix(self, url, type):
+    for fix in self.fixes.get(url, []):
+      if fix.get("type") == type:
+        return fix
 
   def DownloadHtml(self):
     html_cache = self.args.cachedir
@@ -335,6 +319,11 @@ Please see below for the full listing of options.""")
       self._DownloadUrl(url, path)
 
   def _DownloadUrl(self, url, path):
+    if self._GetFix(url, "no-xml-download") is None:
+      # For LessWrong articles under /lw, we retrieve their XML version, because
+      # later on it's easier to extract the contents from that version.
+      url = os.path.join(url, ".xml")
+
     try:
       stat_info = os.stat(path)
     except OSError, e:
@@ -361,9 +350,12 @@ Please see below for the full listing of options.""")
     seq_dir = os.path.join(self.args.cachedir, seq_obj["title"])
 
     for url in seq_obj["articles"]:
-      logging.debug("Processing %s", url)
-      safe_url = urllib.quote(url, safe="")
-      yield os.path.join(seq_dir, safe_url)
+      if self._GetFix(url, "skip") is not None:
+        logging.warn("Skipping %s", url)
+      else:
+        logging.debug("Processing %s", url)
+        safe_url = urllib.quote(url, safe="")
+        yield os.path.join(seq_dir, safe_url)
 
   def SequenceToHtml(self, seq_obj):
     seq = self._CreateSeqDiv(seq_obj, kind="sequence")

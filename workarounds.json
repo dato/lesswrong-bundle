@@ -1,0 +1,24 @@
+{
+  "http://yudkowsky.net/rational/the-simple-truth": [
+    { "type": "no-xml-download" },
+    { "type": "skip",
+      "_notes": "TODO: No XML, needs to be parsed with BeautifulSoup directly."
+    }
+  ],
+  "http://yudkowsky.net/rational/bayes": [
+    { "type": "no-xml-download" },
+    { "type": "skip",
+      "_notes": "TODO: No XML, needs to be parsed with BeautifulSoup directly."
+    }
+  ],
+  "http://lesswrong.com/lw/lw/reversed_stupidity_is_not_intelligence/": [
+    { "type": "skip",
+      "_notes": "Reddit bug, /.xml returns the HTML version (probably because of the double /lw). TODO: parse with BeautifulSoup."
+    }
+  ],
+  "http://lesswrong.com/lw/nu/taboo_your_words/": [
+    { "type": "skip",
+      "_notes": "Embeded control sequences (^K/^N), XML parser barfs."
+    }
+  ]
+}
