@@ -12,8 +12,9 @@
     }
   ],
   "http://lesswrong.com/lw/lw/reversed_stupidity_is_not_intelligence/": [
-    { "type": "skip",
-      "_notes": "Reddit bug, /.xml returns the HTML version (probably because of the double /lw). TODO: parse with BeautifulSoup."
+    { "type": "special-parser",
+      "parser": "lw-html",
+      "_notes": "Reddit bug, /.xml returns the HTML version (probably because of the double /lw)."
     }
   ],
   "http://lesswrong.com/lw/nu/taboo_your_words/": [

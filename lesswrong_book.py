@@ -356,7 +356,7 @@ Please see below for the full listing of options.""")
         logging.debug("Processing %s", url)
         safe_url = urllib.quote(url, safe="")
         contents = open(os.path.join(seq_dir, safe_url)).read()
-        yield self._ApplyContentFixes(url, contents)
+        yield (url, self._ApplyContentFixes(url, contents))
 
   def _ApplyContentFixes(self, url, contents):
     for fix in self.fixes.get(url, []):
@@ -406,13 +406,30 @@ Please see below for the full listing of options.""")
     return seq
 
   def _AddArticles(self, seq, seq_obj):
-    for contents in self._IterSeqFiles(seq_obj):
-      item = ET.fromstring(contents).find("./channel/item")
-      title = smartyPants(item.find("title").text)
-      link = item.find("link").text
-      article_id = re.sub(r"^https?://lesswrong.com/", "",
-                          item.find("guid").text, re.IGNORECASE)
-      html_contents = item.find("description").text
+    for url, contents in self._IterSeqFiles(seq_obj):
+      parser_fix = self._GetFix(url, "special-parser")
+
+      if parser_fix is not None:
+        parser_type = parser_fix["parser"]
+      else:
+        parser_type = "lw-xml"  # Default.
+
+      if parser_type == "lw-xml":
+        item = ET.fromstring(contents).find("./channel/item")
+        title = smartyPants(item.find("title").text)
+        link = item.find("link").text
+        article_id = re.sub(r"^https?://lesswrong.com/", "",
+                            item.find("guid").text, re.IGNORECASE)
+        html_contents = item.find("description").text
+
+      elif parser_type == "lw-html":
+        big_soup = bs4.BeautifulSoup(contents, HTML_PARSER)
+        title = re.sub(r" - Less Wrong$", "", big_soup.title.string.strip())
+        link = big_soup.select(
+              'link[rel="canonical"]')[0]["href"]  # XXX Some might not have it.
+        article_id = re.sub(r"^https?://lesswrong.com/", "", link, re.I)
+        html_contents = str(
+            big_soup.select('div[itemprop="description"] > div')[0])
 
       if HTML_PARSER == "html.parser":
         # There is a problem with HTMLParser's handling of unclosed <br> tags:
