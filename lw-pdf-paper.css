@@ -1,0 +1,40 @@
+/*
+ * CSS file for the PDF version of the Less Wrong sequences (paper version).
+ * Copyright (c) 2013 Dato Simó (dato@net.com.org.es)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation, version 2 [see COPYING.GPLv2].
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+@import "lw-pdf-screen.css";
+
+a {
+    color: inherit;
+}
+
+div.article a.external::after {
+    content: "" ! important;
+}
+
+
+span.footnote[href^="#"] {
+    float: footnote;
+    content: "Page " target-counter(attr(href), page) ", "
+             "‘" target-content(attr(href)) "’.";
+}
+
+span.footnote[href^="http"] {
+    float: footnote;
+    font-style: italic;
+    content: attr(href);
+}

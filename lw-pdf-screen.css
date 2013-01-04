@@ -47,6 +47,7 @@ div.subsequence {
 }
 
 div.article {
+    counter-reset: footnote;
     counter-increment: article;
     page-break-before: right;  /* Only for the first article in a sequence,
                                 * see below. */
@@ -160,13 +161,6 @@ div.article > h3 > span.title::before {
     content: counter(article) ". ";
 }
 
-div.article > h3 > a {
-    font-size: 50%;
-    font-weight: bold;
-    vertical-align: super;
-    margin-left: 0.3em;
-}
-
 div.article > p {
     margin: 0 0 2pt;
     text-indent: 1.5em;
@@ -187,6 +181,19 @@ div.article > p.web-navigation {
                      */
 }
 
+a {
+    text-decoration: none;
+}
+
+div.article a.external::after {
+    content: "↗";
+    font-size: 50%;
+    font-weight: bold;
+    line-height: none;
+    vertical-align: top;
+    margin-left: 0.1em;
+}
+
 div#yudkowsky-rational-bayes > form {
     display: none;
 }
@@ -198,6 +205,30 @@ div.article > p > em:first-child:only-child {
     text-indent: 0;
 }
 */
+
+span.footnote {
+    font-size: 8pt;
+    font-weight: normal;
+    text-indent: 0.2em;
+}
+
+span.footnote::footnote-call {
+    font-size: 9pt;
+    font-style: normal;
+    vertical-align: super;
+}
+
+span.footnote::footnote-marker {
+    font-style: normal;
+}
+
+@page {
+  @footnotes {
+    border-top: solid black thin;
+    prince-border-clip: 6em;
+    padding-top: 4pt;
+  }
+}
 
 @page :blank {
   @top-right { content: normal }

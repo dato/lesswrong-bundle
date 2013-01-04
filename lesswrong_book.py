@@ -35,8 +35,6 @@ See ParseArgs() or --help for options.
 # TODO [important]: get the PDF output reviewed / get feedback on any glaring
 # mistakes or omissions.
 
-# TODO [important]: implement navigation/cross-references support.
-
 # TODO [important]: download images.
 
 # TODO: get rid of multiple <a id="more"> elements (they produce innocuous
@@ -145,6 +143,9 @@ class CssClass(object):
   ARTICLE = "article"
   SEQUENCE = "sequence"
   SUBSEQUENCE = "subsequence"
+  FOOTNOTE = "footnote"
+  A_INTERNAL = "internal"
+  A_EXTERNAL = "external"
   DESCRIPTION = "description"
   WEB_NAVIGATION = "web-navigation"
   YUDKOWSKY_SHARE = "share"
@@ -230,8 +231,9 @@ Some options to redirect the output:
 Finally, you can alter the appearance of the resulting PDF (and HTML) by
 editing 'lw-pdf-screen.css' and 'lw-html.css' in the current directory, or
 specigying alternate CSS files with --css-pdf and --css-html. The default
-'lw-pdf-screen.css' embeds real links to navigate the book, which is useful
-for reading the PDF in a tablet.
+'lw-pdf-screen.css' embeds real links to navigate the PDF, which is useful
+for reading the PDF in a tablet. There is also 'lw-pdf-paper.css', which uses
+footnotes as a navigation mechanism.
 
 Please see below for the full listing of options.""")
 
@@ -282,6 +284,13 @@ Please see below for the full listing of options.""")
         "--check-last-modified", action="store_true",
         help="check Last-Modified header when using items from the HTML cache")
 
+    # Some links to Overcoming Bias are permanent redirects to articles in Less
+    # Wrong; we want to use the Less Wrong ones because that allows to use them
+    # as internal cross-references, rather than external links.
+    parser.add_argument(
+        "--urlmap", metavar="PATH", default="urlmap.json",
+        help="permanent redirects for URLs found in the book")
+
     parser.add_argument(
         "--workarounds", metavar="PATH", default="workarounds.json",
         help="workarounds to apply to some articles to be able to parse them")
@@ -291,6 +300,9 @@ Please see below for the full listing of options.""")
   def ParseConfigs(self):
     with open(self.args.workarounds) as wf:
       self.fixes = json.load(wf)
+
+    with open(self.args.urlmap) as uf:
+      self.urlmap = json.load(uf)
 
     with open(self.args.sequence_file) as sf:
       self.seqs = json.load(sf)
@@ -478,7 +490,6 @@ Please see below for the full listing of options.""")
 
       article = soup.find("div")
       article["class"] = CssClass.ARTICLE
-      article["id"] = self.url_ids[url]
 
       self._MassageArticleText(article)
       seq.append(article)
@@ -491,15 +502,23 @@ Please see below for the full listing of options.""")
       # the CSS file.
       article_title = soup.new_tag("span")
       article_title["class"] = CssClass.TITLE
+      article_title["id"] = self.url_ids[url]
       article_title.string = title
       article_h.append(article_title)
 
       article_link = soup.new_tag("a")
       article_link["href"] = url
-      article_link.string = u"↗"
+      article_link["class"] = CssClass.A_EXTERNAL
       article_h.append(article_link)
 
+      footnote_link = soup.new_tag("span")
+      footnote_link["class"] = CssClass.FOOTNOTE
+      footnote_link["href"] = url
+      article_h.append(footnote_link)
+
   def _MassageArticleText(self, article):
+    soup = bs4.BeautifulSoup("")  # For creating tags below.
+
     # Mark with a class the "Part of the Foo sequence" and "Next post:" blurbs,
     # so that the print CSS can avoid displaying them (they are not needed for
     # the book).
@@ -508,6 +527,33 @@ Please see below for the full listing of options.""")
                    r"\((end|start) of.*sequence)", p.text, re.IGNORECASE):
         p["class"] = CssClass.WEB_NAVIGATION
 
+    # Fix links to articles in the book.
+    for a in article.select('a'):
+      try:
+        href = a["href"]
+      except KeyError:
+        pass
+      else:
+        if href.startswith("/lw/"):
+          # Use the full URL so as to be able to find it in self.url_ids later
+          # on, or have the external link work normally otherwise.
+          href = a["href"] = "http://lesswrong.com" + href
+        if re.search(r"^https?://lesswrong\.com/lw/[^/]+/[^/]+$", href):
+          # Canonicalize LW article URLs by appending a missing trailing slash.
+          href += "/"
+        if href in self.urlmap:
+          # Use the redirection so as to be able to find it in self.url_ids.
+          href = a["href"] = self.urlmap[href]
+        if href in self.url_ids:
+          a["href"] = "#" + self.url_ids[href]
+          a["class"] = CssClass.A_INTERNAL
+        else:
+          a["class"] = CssClass.A_EXTERNAL
+
+        footnote_link = soup.new_tag("span")
+        footnote_link["class"] = CssClass.FOOTNOTE
+        footnote_link["href"] = a["href"]
+        a.insert_after(footnote_link)
 
 def _MkdirP(directory):
   """mkdir -p (create directory & parents without failing if they exist)."""
