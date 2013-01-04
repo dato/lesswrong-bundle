@@ -17,8 +17,8 @@
  */
 
 @page {
-  size: 15cm 22.5cm;
-  margin: 2cm;
+    size: 15cm 22.5cm;
+    margin: 2cm;
 }
 
 :root {
@@ -150,7 +150,7 @@ div.subsequence > h2 {
 div.article > h3 > span.title {
     string-set: article-title
         /* counter(sequence, upper-roman) "-" counter(article) ". " */
-	content();
+        content();
     prince-bookmark-level: 2;
     prince-bookmark-state: open;
     prince-bookmark-label: counter(article) ". " content();
@@ -183,8 +183,8 @@ div.article > p:first-of-type {
 div.article > p.web-navigation {
     display: none;  /* The Python source marks with 'web-navigation' the
                      * "Part of the Foo sequence" and "Next post:" blurbs,
-		     * which are not needed in the PDF version.
-		     */
+                     * which are not needed in the PDF version.
+                     */
 }
 
 div#yudkowsky-rational-bayes > form {
@@ -247,4 +247,3 @@ div.article > p > em:first-child:only-child {
     color: #666;
   }
 }
-
