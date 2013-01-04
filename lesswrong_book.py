@@ -280,6 +280,22 @@ Please see below for the full listing of options.""")
   def ParseSeqList(self):
     with open(self.args.sequence_file) as sf:
       self.seqs = json.load(sf)
+      self.url_ids = {}
+
+    def _DoSequenceIds(seq_obj):
+      for url in seq_obj["articles"]:
+        noproto_url = re.sub(r"^https?://|/$", "", url, re.IGNORECASE)
+        self.url_ids[url] = re.sub(r"[./]", "-", noproto_url)
+
+    for seq_obj in self.seqs:
+      if "subsequences" not in seq_obj:
+        _DoSequenceIds(seq_obj)
+      elif "articles" in seq_obj:
+        raise Error(
+            "sequences with both articles and sub-sequences are not supported")
+      else:
+        for subseq_obj in seq_obj["subsequences"]:
+          _DoSequenceIds(subseq_obj)
 
   def LoadWorkarounds(self):
     with open(self.args.workarounds) as wf:
@@ -299,13 +315,9 @@ Please see below for the full listing of options.""")
       self._DownloadSequence(seq_obj, seq_dir)
 
     for seq_obj in self.seqs:
-      # FIXME: Refactor out, this is repeated in SequenceToHtml().
-      if "subsequences" not in seq_obj:
+      if "articles" in seq_obj:
         _DoSequence(seq_obj)
-      elif "articles" in seq_obj:
-        raise Error(
-            "sequences with both articles and sub-sequences are not supported")
-      else:
+      elif "subsequences" in seq_obj:
         for subseq_obj in seq_obj["subsequences"]:
           _DoSequence(subseq_obj)
 
@@ -367,12 +379,9 @@ Please see below for the full listing of options.""")
   def SequenceToHtml(self, seq_obj):
     seq = self._CreateSeqDiv(seq_obj, kind="sequence")
 
-    if "subsequences" not in seq_obj:
+    if "articles" in seq_obj:
       self._AddArticles(seq, seq_obj)
-    elif "articles" in seq_obj:
-      raise Error(
-          "sequences with both articles and sub-sequences are not supported")
-    else:
+    elif "subsequences"in seq_obj:
       for ss_obj in seq_obj["subsequences"]:
         subseq = self._CreateSeqDiv(ss_obj, kind="subsequence")
         self._AddArticles(subseq, ss_obj)
@@ -415,17 +424,11 @@ Please see below for the full listing of options.""")
       if parser_type == "lw-xml":
         item = ET.fromstring(contents).find("./channel/item")
         title = smartyPants(item.find("title").text)
-        link = item.find("link").text
-        article_id = re.sub(r"^https?://lesswrong.com/", "",
-                            item.find("guid").text, re.IGNORECASE)
         html_contents = item.find("description").text
 
       elif parser_type == "lw-html":
         big_soup = bs4.BeautifulSoup(contents, HTML_PARSER)
         title = re.sub(r" - Less Wrong$", "", big_soup.title.string.strip())
-        link = big_soup.select(
-              'link[rel="canonical"]')[0]["href"]  # XXX Some might not have it.
-        article_id = re.sub(r"^https?://lesswrong.com/", "", link, re.I)
         html_contents = str(
             big_soup.select('div[itemprop="description"] > div')[0])
 
@@ -433,10 +436,7 @@ Please see below for the full listing of options.""")
         big_soup = bs4.BeautifulSoup(contents, HTML_PARSER)
         h1 = big_soup.find("h1")
         div = big_soup.new_tag("div")
-
         title = h1.string
-        link = url
-        article_id = re.sub(r"^https?://(yudkowsky).net(/.+)", r"\1\2", link)
 
         for tag in list(h1.next_siblings):  # XXX Why is list() needed here?!
           if (isinstance(tag, bs4.element.Tag)
@@ -468,7 +468,7 @@ Please see below for the full listing of options.""")
 
       article = soup.find("div")
       article["class"] = "article"
-      article["id"] = article_id.replace('/', '-')
+      article["id"] = self.url_ids[url]
 
       self._MassageArticleText(article)
       seq.append(article)
@@ -485,7 +485,7 @@ Please see below for the full listing of options.""")
       article_h.append(article_title)
 
       article_link = soup.new_tag("a")
-      article_link["href"] = link
+      article_link["href"] = url
       article_link.string = u"↗"
       article_h.append(article_link)
 
