@@ -140,6 +140,16 @@ class Error(Exception):
   "Base exception for this module."
 
 
+class CssClass(object):
+  TITLE = "title"
+  ARTICLE = "article"
+  SEQUENCE = "sequence"
+  SUBSEQUENCE = "subsequence"
+  DESCRIPTION = "description"
+  WEB_NAVIGATION = "web-navigation"
+  YUDKOWSKY_SHARE = "share"
+
+
 class LessWrongBook(object):
 
   def Run(self):
@@ -377,13 +387,13 @@ Please see below for the full listing of options.""")
     return contents
 
   def SequenceToHtml(self, seq_obj):
-    seq = self._CreateSeqDiv(seq_obj, kind="sequence")
+    seq = self._CreateSeqDiv(seq_obj, kind=CssClass.SEQUENCE)
 
     if "articles" in seq_obj:
       self._AddArticles(seq, seq_obj)
     elif "subsequences"in seq_obj:
       for ss_obj in seq_obj["subsequences"]:
-        subseq = self._CreateSeqDiv(ss_obj, kind="subsequence")
+        subseq = self._CreateSeqDiv(ss_obj, kind=CssClass.SUBSEQUENCE)
         self._AddArticles(subseq, ss_obj)
         seq.append(subseq)
 
@@ -405,7 +415,7 @@ Please see below for the full listing of options.""")
       desc_soup = bs4.BeautifulSoup(smartyPants(seq_obj["description"]),
                                     "html.parser")
       seq_desc = soup.new_tag("div")
-      seq_desc["class"] = "description"
+      seq_desc["class"] = CssClass.DESCRIPTION
       for elem in desc_soup.children:
         seq_desc.append(elem)
       seq.append(seq_desc)
@@ -441,7 +451,7 @@ Please see below for the full listing of options.""")
         for tag in list(h1.next_siblings):  # XXX Why is list() needed here?!
           if (isinstance(tag, bs4.element.Tag)
               and tag.name == "ul"
-              and "share" in tag.get("class", [])):
+              and CssClass.YUDKOWSKY_SHARE in tag.get("class", [])):
             break
           else:
             div.append(tag)
@@ -467,7 +477,7 @@ Please see below for the full listing of options.""")
         raise
 
       article = soup.find("div")
-      article["class"] = "article"
+      article["class"] = CssClass.ARTICLE
       article["id"] = self.url_ids[url]
 
       self._MassageArticleText(article)
@@ -480,7 +490,7 @@ Please see below for the full listing of options.""")
       # external link, but it's possible to extract only the title itself from
       # the CSS file.
       article_title = soup.new_tag("span")
-      article_title["class"] = "title"
+      article_title["class"] = CssClass.TITLE
       article_title.string = title
       article_h.append(article_title)
 
@@ -496,7 +506,7 @@ Please see below for the full listing of options.""")
     for p in article.select('p[style="text-align:right"]'):
       if re.search(r"^(Part of.*sequence|(Next|Previous) post:|"
                    r"\((end|start) of.*sequence)", p.text):
-        p["class"] = "web-navigation"
+        p["class"] = CssClass.WEB_NAVIGATION
 
 
 def _MkdirP(directory):
