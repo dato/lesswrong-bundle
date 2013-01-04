@@ -176,8 +176,8 @@ class LessWrongBook(object):
     css_kwargs = {"rel": "stylesheet",
                   "type": "text/css"}
 
-    for style_kwargs in [dict(href=self.args.css_screen),
-                         dict(href=self.args.css_print, media="print")]:
+    for style_kwargs in [dict(href=self.args.css_html),
+                         dict(href=self.args.css_pdf, media="print")]:
       style_kwargs.update(css_kwargs)
       head.append(doc.new_tag("link", **style_kwargs))
 
@@ -229,8 +229,10 @@ Some options to redirect the output:
   --save-html PATH: keep the intermediate HTML in the specified path.
 
 Finally, you can alter the appearance of the resulting PDF (and HTML) by
-editing 'lesswrong-print.css' and 'lesswrong-screen.css' in the current
-directory, or specigying alternate CSS files with --css-print and --css-screen.
+editing 'lw-pdf-screen.css' and 'lw-html.css' in the current directory, or
+specigying alternate CSS files with --css-pdf and --css-html. The default
+'lw-pdf-screen.css' embeds real links to navigate the book, which is useful
+for reading the PDF in a tablet.
 
 Please see below for the full listing of options.""")
 
@@ -255,14 +257,14 @@ Please see below for the full listing of options.""")
         help="path of the 'sequences.json' file (default: 'sequences.json')")
 
     parser.add_argument(
-        "-s", "--css-print", metavar="PATH", default="lesswrong-print.css",
+        "-s", "--css-pdf", metavar="PATH", default="lw-pdf-screen.css",
         help=("path to the CSS file to use in the PDF (by PrinceXML) "
-              "(default: 'lesswrong-print.css')"))
+              "(default: 'lw-pdf-screen.css')"))
 
     parser.add_argument(
-        "--css-screen", metavar="PATH", default="lesswrong-screen.css",
+        "--css-html", metavar="PATH", default="lw-html.css",
         help=("path to the default CSS of the generated HTML file "
-              "(default: 'lesswrong-screen.css', currently empty)"))
+              "(default: 'lw-html.css', currently empty)"))
 
     parser.add_argument(
         "--prince", metavar="PATH", default="prince",
