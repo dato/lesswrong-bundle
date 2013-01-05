@@ -505,9 +505,9 @@ Please see below for the full listing of options.""")
     # Mark with a class the "Part of the Foo sequence" and "Next post:" blurbs,
     # so that the print CSS can avoid displaying them (they are not needed for
     # the book).
-    for p in article.select('p[style="text-align:right"]'):
+    for p in article.select('p[style^="text-align:"]'):
       if re.search(r"^(Part of.*sequence|(Next|Previous) post:|"
-                   r"\((end|start) of.*sequence)", p.text):
+                   r"\((end|start) of.*sequence)", p.text, re.IGNORECASE):
         p["class"] = CssClass.WEB_NAVIGATION
 
 
