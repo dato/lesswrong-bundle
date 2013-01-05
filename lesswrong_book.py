@@ -84,8 +84,8 @@ See ParseArgs() or --help for options.
 # TODO [maybe]: add missing sequences (Quantum Physics, Fun Theory, The Craft
 # and The Community, Advance Epistemology 101).
 
-# TODO [maybe]: add referenced articles not part of the sequences in an
-# appendix.
+# TODO [maybe]: add most referenced articles (not already part of the sequences)
+# in an appendix. (See 'referenced.txt'.)
 
 import argparse
 import atexit
