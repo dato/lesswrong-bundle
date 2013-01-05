@@ -69,6 +69,8 @@ See ParseArgs() or --help for options.
 #    #1: Seeing with Fresh Eyes
 #    #2: The Methaetics Sequence
 
+# TODO [maybe]: add a Table of Contents.
+
 # TODO [maybe]: differentiate somehow between "important" vs. "skippable"
 # articles (bold and italics in the sequence pages in the wiki, respectively).
 
