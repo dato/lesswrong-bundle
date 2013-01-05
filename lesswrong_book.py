@@ -157,8 +157,7 @@ class LessWrongBook(object):
     logging.basicConfig(level=logging.INFO,
                         format="%(levelname)s: %(message)s", stream=sys.stdout)
 
-    self.ParseSeqList()
-    self.LoadWorkarounds()
+    self.ParseConfigs()
     self.DownloadHtml()
 
     if self.args.download_only:
@@ -289,7 +288,10 @@ Please see below for the full listing of options.""")
 
     return parser.parse_args()
 
-  def ParseSeqList(self):
+  def ParseConfigs(self):
+    with open(self.args.workarounds) as wf:
+      self.fixes = json.load(wf)
+
     with open(self.args.sequence_file) as sf:
       self.seqs = json.load(sf)
       self.url_ids = {}
@@ -308,10 +310,6 @@ Please see below for the full listing of options.""")
       else:
         for subseq_obj in seq_obj["subsequences"]:
           _DoSequenceIds(subseq_obj)
-
-  def LoadWorkarounds(self):
-    with open(self.args.workarounds) as wf:
-      self.fixes = json.load(wf)
 
   def _GetFix(self, url, type):
     for fix in self.fixes.get(url, []):
