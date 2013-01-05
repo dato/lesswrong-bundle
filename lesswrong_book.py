@@ -16,7 +16,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-"""Generate a PDF book out of Less Wrong sequences (using PrinceXML).
+"""Generate a PDF document out of Less Wrong sequences (using PrinceXML).
 
 Software requirements:
 
@@ -209,7 +209,7 @@ class LessWrongBook(object):
     parser = argparse.ArgumentParser(
         usage="%(prog)s [OPTIONS]",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="""Generate a PDF book out of Less Wrong sequences.
+        description="""Generate a PDF document out of Less Wrong sequences.
 
 All options have default values. If you run the program without options, it
 will download all the sequences from lesswrong.com, and will output a PDF file
@@ -245,7 +245,7 @@ Please see below for the full listing of options.""")
 
     parser.add_argument(
         "-o", "--output", metavar="PATH", default='lesswrong-seq.pdf',
-        help="where to store the PDF book (default: 'lesswrong-seq.pdf')")
+        help="where to store the PDF file (default: 'lesswrong-seq.pdf')")
 
     parser.add_argument(
         "--save-html", metavar="PATH", default=None,
@@ -291,7 +291,7 @@ Please see below for the full listing of options.""")
     # as internal cross-references, rather than external links.
     parser.add_argument(
         "--urlmap", metavar="PATH", default="urlmap.json",
-        help="permanent redirects for URLs found in the book")
+        help="permanent redirects for URLs found in the articles")
 
     parser.add_argument(
         "--workarounds", metavar="PATH", default="workarounds.json",
@@ -523,13 +523,13 @@ Please see below for the full listing of options.""")
 
     # Mark with a class the "Part of the Foo sequence" and "Next post:" blurbs,
     # so that the print CSS can avoid displaying them (they are not needed for
-    # the book).
+    # the PDF version).
     for p in article.select('p[style^="text-align:"]'):
       if re.search(r"^(Part of.*sequence|(Next|Previous) post:|"
                    r"\((end|start) of.*sequence)", p.text, re.IGNORECASE):
         p["class"] = CssClass.WEB_NAVIGATION
 
-    # Fix links to articles in the book.
+    # Fix links to articles in the PDF.
     for a in article.select('a'):
       try:
         href = a["href"]
