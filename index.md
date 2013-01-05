@@ -56,6 +56,9 @@ lag behind in what respects to annotations.
 For this reason (rich annotations), I very much prefer PDF for my non-fiction
 books.
 
+Also, I wanted to see what [Prince XML](http://princexml.com) could and
+could not do.
+
 <div id="author">
   — <a href="mailto:dato@net.com.org.es">Dato</a>
 </div>
