@@ -5,18 +5,30 @@ title: Less Wrong sequences bundle
 
 # _Less Wrong_ sequences bundle (PDF)
 
-Here you can find a PDF version of Eliezer Yudkowsky's
-[_Less Wrong_ sequences][seq]. Not all sequences are included at the moment,
-see below for the list. The code for generating this bundle is
+Here you can find PDF versions of Eliezer Yudkowsky's
+[_Less Wrong_ sequences][seq]. Not all sequences are included at the
+moment, see below for the list. The code for generating this bundle is
 [on GitHub][github].
+
+The nice thing about these PDFs is that allow you to navigate Eliezer's
+back- and forward-references to other articles in the sequences, or in
+other sequences. This is done in two ways:
+
+  * the _screen_ version of the PDF assumes you're going to use a tablet
+    or similar device to read it, and uses normal, blue links; external
+    URLs are sign-posted appropriately.
+
+  * the _paper_ version of the PDF assumes you're going to print it
+    _(!)_, and uses footnotes to show both external and internal links
+    (for external links it shows the URL, for internal links it shows
+    the page and title of the article).
 
 ## Download
 
-The latest version of the sequences PDF is:
+The latest version of the sequences PDF was generated on 2013-01-05:
 
-  * [2013-01-02][pdf] (3.9 MB, 926 pages)
-
-(You may retrieve previous versions [here][pdf-history].)
+  * screen version, [_lesswrong-seq.pdf_][pdf]
+  * paper version, [_lesswrong-seq_paper.pdf_][pdf-paper]
 
 ## List of sequences
 
@@ -50,8 +62,8 @@ books.
 
   [seq]: http://lesswrong.com/sequences
   [github]: https://github.com/dato/lesswrong-bundle/
-  [pdf]: https://dato.github.com/lesswrong-bundle/lesswrong-seq.pdf
-  [pdf-history]: https://github.com/dato/lesswrong-bundle/commits/gh-pages/lesswrong-seq.pdf
+  [pdf]: http://dato.github.com/lesswrong-bundle/lesswrong-seq.pdf
+  [pdf-paper]: http://dato.github.com/lesswrong-bundle/lesswrong-seq_paper.pdf
   [issues]: https://github.com/dato/lesswrong-bundle/issues
   [pyfile]: https://github.com/dato/lesswrong-bundle/blob/master/lesswrong_book.py
 
