@@ -206,6 +206,16 @@ div.article > p > em:first-child:only-child {
 }
 */
 
+span.spoiler {
+    /* Show spoilers upside-down + mirrored, and in red.
+     * TODO: add a footnote somewhere explaining how to decipher them
+     * (currently: place the page in front of a mirror, upside down).
+     */
+    color: red;
+    display: block;
+    transform: scale(1, -1);
+}
+
 span.footnote {
     font-size: 8pt;
     font-weight: normal;

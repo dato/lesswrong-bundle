@@ -151,6 +151,7 @@ class CssClass(object):
   DESCRIPTION = "description"
   WEB_NAVIGATION = "web-navigation"
   YUDKOWSKY_SHARE = "share"
+  SPOILER = "spoiler"
 
 
 class LessWrongBook(object):
@@ -557,6 +558,17 @@ Please see below for the full listing of options.""")
         footnote_link["class"] = CssClass.FOOTNOTE
         footnote_link["href"] = a["href"]
         a.insert_after(footnote_link)
+
+    # Text in white are spoilers; mark them with a class for formatting in CSS.
+    # I cannot seem to get select('span[style="color: #ffffff"]') to work, so I
+    # check for the color with a regular expression.
+    white_span_re = re.compile(
+        r"^color:\s*(#(?:fff){1,2}|white)", re.IGNORECASE)
+
+    for span in article.select('span[style^="color:"]'):
+      if white_span_re.search(span["style"]):
+        span["class"] = CssClass.SPOILER
+        span["style"] = white_span_re.sub("color: default", span["style"])
 
 def _MkdirP(directory):
   """mkdir -p (create directory & parents without failing if they exist)."""
