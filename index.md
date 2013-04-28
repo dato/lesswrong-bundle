@@ -25,7 +25,7 @@ other sequences. This is done in two ways:
 
 ## Download
 
-The latest version of the sequences PDF was generated on 2013-01-05:
+The latest version of the sequences PDF was generated on 2013-04-28:
 
   * screen version, [_lesswrong-seq.pdf_][pdf]
   * paper version, [_lesswrong-seq_paper.pdf_][pdf-paper]
