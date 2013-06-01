@@ -65,8 +65,8 @@ could not do.
 
   [seq]: http://lesswrong.com/sequences
   [github]: https://github.com/dato/lesswrong-bundle/
-  [pdf]: http://dato.github.com/lesswrong-bundle/lesswrong-seq.pdf
-  [pdf-paper]: http://dato.github.com/lesswrong-bundle/lesswrong-seq_paper.pdf
+  [pdf]: http://dato.github.io/lesswrong-bundle/lesswrong-seq.pdf
+  [pdf-paper]: http://dato.github.io/lesswrong-bundle/lesswrong-seq_paper.pdf
   [issues]: https://github.com/dato/lesswrong-bundle/issues
   [pyfile]: https://github.com/dato/lesswrong-bundle/blob/master/lesswrong_book.py
 
