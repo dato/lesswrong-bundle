@@ -25,10 +25,6 @@ Software requirements:
   - BeautifulSoup v4  (easy_install BeautifulSoup4)
   - lxml              (easy_install lxml)
 
-Optional libraries:
-
-  - smartypants       (for “smart quote” support; easy_install smartypants)
-
 See ParseArgs() or --help for options.
 """
 
@@ -89,14 +85,18 @@ See ParseArgs() or --help for options.
 
 import argparse
 import atexit
+import bs4
 import calendar
+import csv
 import errno
 import HTMLParser
 import httplib
+import jinja2
 import json
 import logging
-import re
+import lxml
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -109,32 +109,10 @@ import urlparse
 from xml.etree import ElementTree as ET
 from xml.sax import saxutils
 
-import bs4  # Required; easy_install BeautifulSoup4
-
 try:
-  from smartypants import smartyPants  # Optional; easy_install smartypants
+  from smartypants import smartypants  # Optional; easy_install smartypants
 except ImportError:
-  smartyPants = lambda text, attr="1": text
-
-try:
-  import lxml  # Strongly advised; easy_install lxml
-except ImportError:
-  print >>sys.stderr, (
-      "WARNING: you don't have lxml installed, which is quasi-required. If it's"
-      "\n"
-      "impossible for you to install it, manually edit the script to remove the"
-      "\n"
-      "sys.exit(2) statement in the source. Read the associated caveats.")
-  # CAVEATS: HTMLParser is mostly untested. During early development, I noticed
-  # some problems with HTMLParser which made me switched to lxml. One of this
-  # problem (handling of unclosed <br> tags) resulted in missing lines in the
-  # resulting PDF. I try to workaround that particular issue in the code below
-  # if HTMLParser is used, but there may be others. USE AT YOUR OWN RISK.
-  sys.exit(2)
-  HTML_PARSER = "html.parser"
-else:
-  HTML_PARSER = "lxml"
-
+  smartypants = lambda text, attr="1": text
 
 class Error(Exception):
   "Base exception for this module."
@@ -175,16 +153,13 @@ class LessWrongBook(object):
     head = doc.html.head
     body = doc.html.body
 
-    # CSS files.
-    css_kwargs = {"rel": "stylesheet",
-                  "type": "text/css"}
-
     for style_kwargs in [dict(href=self.args.css_html),
                          dict(href=self.args.css_pdf, media="print")]:
-      style_kwargs.update(css_kwargs)
+      style_kwargs.update({"rel": "stylesheet", "type": "text/css"})
       head.append(doc.new_tag("link", **style_kwargs))
 
     # The sequences.
+
     for seq in self.seqs:
       body.append(self.SequenceToHtml(seq))
 
@@ -198,12 +173,9 @@ class LessWrongBook(object):
       html_file = self.args.save_html
       shutil.copy(tmp.name, html_file)
     else:
-      html_file = os.path.relpath(tmp.name)  # Make Prince warnings less verbose
-                                             # by not including the full path.
+      html_file = tmp.name
 
-    # PDF out.
-    subprocess.call([self.args.prince, "--javascript",
-                     html_file, self.args.output])
+    subprocess.call([self.args.prince, html_file, self.args.output])
 
   @staticmethod
   def ParseArgs():
@@ -222,7 +194,7 @@ edit that file in the current directory, or specify an alternate one with:
   --sequence-file PATH
 
 And an option exists to use an alternative HTML skeleton file instead of
-'lesswrong-seq_skel.html':
+'cover.html':
 
   --html-skel PATH
 
@@ -253,12 +225,16 @@ Please see below for the full listing of options.""")
         help="keep the intermediate HTML in the specified location")
 
     parser.add_argument(
-        "--html-skel", metavar="PATH", default="lesswrong-seq_skel.html",
-        help="HTML skeleton to use (default: 'lesswrong-seq_skel.html')")
+        "--html-skel", metavar="PATH", default="cover.html",
+        help="HTML skeleton to use (default: 'cover.html')")
 
     parser.add_argument(
         "--sequence-file", metavar="PATH", default="sequences.json",
         help="path of the 'sequences.json' file (default: 'sequences.json')")
+
+    parser.add_argument(
+        "--toc", metavar="PATH", default="TOC.tsv",
+        help="path of the 'TOC.tsv' file (default: 'TOC.tsv')")
 
     parser.add_argument(
         "-s", "--css-pdf", metavar="PATH", default="lw-pdf-screen.css",
@@ -310,6 +286,9 @@ Please see below for the full listing of options.""")
     with open(self.args.sequence_file) as sf:
       self.seqs = json.load(sf)
       self.url_ids = {}
+
+    with open(self.args.toc) as toc:
+      self.toc = csv.reader(toc, delimiter='	')
 
     def _DoSequenceIds(seq_obj):
       for url in seq_obj["articles"]:
@@ -377,6 +356,7 @@ Please see below for the full listing of options.""")
         else:
           logging.info("will re-download %s, it was modified", url)
 
+    print(url)
     data = urllib2.urlopen(url).read()
     with open(path, "w") as f:
       f.write(data)
@@ -415,20 +395,19 @@ Please see below for the full listing of options.""")
     return seq
 
   def _CreateSeqDiv(self, seq_obj, kind):
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader(os.getcwd()))
+    #template = env.get_template(kind)
+
     soup = bs4.BeautifulSoup("")
     seq = soup.new_tag("div")
     seq["class"] = kind
 
     seq_h = soup.new_tag("h2")
-    seq_h.string = smartyPants(seq_obj["title"])
+    seq_h.string = smartypants(seq_obj["title"])
     seq.append(seq_h)
 
     if "description" in seq_obj:
-      # XXX "html.parser" is used here because lxml adds <html></html> around
-      # the element. Figure out how to achieve what we need here in a proper
-      # manner.
-      desc_soup = bs4.BeautifulSoup(smartyPants(seq_obj["description"]),
-                                    "html.parser")
+      desc_soup = bs4.BeautifulSoup(smartypants(seq_obj["description"]), "html.parser")
       seq_desc = soup.new_tag("div")
       seq_desc["class"] = CssClass.DESCRIPTION
       for elem in desc_soup.children:
@@ -448,17 +427,17 @@ Please see below for the full listing of options.""")
 
       if parser_type == "lw-xml":
         item = ET.fromstring(contents).find("./channel/item")
-        title = smartyPants(item.find("title").text)
+        title = smartypants(item.find("title").text)
         html_contents = item.find("description").text
 
       elif parser_type == "lw-html":
-        big_soup = bs4.BeautifulSoup(contents, HTML_PARSER)
+        big_soup = bs4.BeautifulSoup(contents, "lxml")
         title = re.sub(r" - Less Wrong$", "", big_soup.title.string.strip())
         html_contents = str(
             big_soup.select('div[itemprop="description"] > div')[0])
 
       elif parser_type == "yudkowsky.net":
-        big_soup = bs4.BeautifulSoup(contents, HTML_PARSER)
+        big_soup = bs4.BeautifulSoup(contents, "lxml")
         h1 = big_soup.find("h1")
         div = big_soup.new_tag("div")
         title = h1.string
@@ -476,16 +455,8 @@ Please see below for the full listing of options.""")
       else:
         raise Error("unknown special parser %r" % parser_type)
 
-      if HTML_PARSER == "html.parser":
-        # There is a problem with HTMLParser's handling of unclosed <br> tags:
-        # they will be closed with </br>, but not immediately after the opening
-        # tag; the heuristic it uses makes it close the tag after a certain
-        # amount of text, which makes Prince ignore it. Fix it the dirty way:
-        html_contents = re.sub("<br>", "<br />", html_contents,
-                               flags=re.IGNORECASE)
-
       try:
-        soup = bs4.BeautifulSoup(smartyPants(html_contents), HTML_PARSER)
+        soup = bs4.BeautifulSoup(smartypants(html_contents), "lxml")
       except HTMLParser.HTMLParseError, e:
         print ">>> Failed source:"
         print html_contents

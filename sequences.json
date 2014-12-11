@@ -1,53 +1,208 @@
 [
   {
     "title": "Map and Territory",
-    "description": "<p>A collection of posts dealing with the fundamentals of rationality: the difference between the map and the territory, Bayes's Theorem and the nature of evidence, why anyone should care about truth, and minds as reflective cognitive engines.</p>",
-    "articles": [
-      "http://yudkowsky.net/rational/the-simple-truth",
-      "http://lesswrong.com/lw/31/what_do_we_mean_by_rationality/",
-      "http://yudkowsky.net/rational/bayes",
-      "http://lesswrong.com/lw/go/why_truth_and/",
-      "http://lesswrong.com/lw/jl/what_is_evidence/",
-      "http://lesswrong.com/lw/jn/how_much_evidence_does_it_take/",
-      "http://lesswrong.com/lw/jr/how_to_convince_me_that_2_2_3/",
-      "http://lesswrong.com/lw/jp/occams_razor/",
-      "http://lesswrong.com/lw/jm/the_lens_that_sees_its_flaws/"
+    "subsequences": [
+      {
+        "title": "Predictably Wrong",
+        "description": "<p>A collection of posts dealing with the fundamentals of rationality: the difference between the map and the territory, Bayes's Theorem and the nature of evidence, why anyone should care about truth, and minds as reflective cognitive engines.</p>",
+        "articles": [
+          "http://lesswrong.com/lw/31/what_do_we_mean_by_rationality/",
+          "http://lesswrong.com/lw/hp/feeling_rational/",
+          "http://lesswrong.com/lw/go/why_truth_and/",
+          "http://lesswrong.com/lw/gp/whats_a_bias_again/",
+          "http://lesswrong.com/lw/j5/availability/",
+          "http://lesswrong.com/lw/jk/burdensome_details/",
+          "http://lesswrong.com/lw/jg/planning_fallacy/",
+          "http://lesswrong.com/lw/ke/illusion_of_transparency_why_no_one_understands/",
+          "http://lesswrong.com/lw/kg/expecting_short_inferential_distances/",
+          "http://lesswrong.com/lw/jm/the_lens_that_sees_its_flaws/"
+        ]
+      },
+      {
+        "title": "Fake Beliefs",
+        "articles":[
+          "http://lesswrong.com/lw/i3/making_beliefs_pay_rent_in_anticipated_experiences/",
+          "http://lesswrong.com/lw/gt/a_fable_of_science_and_politics/",
+          "http://lesswrong.com/lw/i4/belief_in_belief/",
+          "http://lesswrong.com/lw/i5/bayesian_judo/",
+          "http://lesswrong.com/lw/i6/professing_and_cheering/",
+          "http://lesswrong.com/lw/jb/applause_lights/",
+          "http://lesswrong.com/lw/i7/belief_as_attire/",
+          "http://lesswrong.com/lw/yp/pretending_to_be_wise/",
+          "http://lesswrong.com/lw/i8/religions_claim_to_be_nondisprovable/"
+        ]
+      },
+      {
+        "title": "Noticing Confusion",
+        "articles": [
+          "http://lesswrong.com/lw/jl/what_is_evidence/",
+          "http://lesswrong.com/lw/in/scientific_evidence_legal_evidence_rational/",
+          "http://lesswrong.com/lw/jn/how_much_evidence_does_it_take/",
+          "http://lesswrong.com/lw/jp/occams_razor/",
+          "http://lesswrong.com/lw/jo/einsteins_arrogance/",
+          "http://lesswrong.com/lw/ia/focus_your_uncertainty/",
+          "http://lesswrong.com/lw/ic/the_virtue_of_narrowness/",
+          "http://lesswrong.com/lw/if/your_strength_as_a_rationalist/",
+          "http://lesswrong.com/lw/ih/absence_of_evidence_is_evidence_of_absence/",
+          "http://lesswrong.com/lw/ii/conservation_of_expected_evidence/",
+          "http://lesswrong.com/lw/im/hindsight_devalues_science/"
+        ]
+      },
+      {
+        "title": "Mysterious Answers to Mysterious Questions",
+        "description": "<p>A sequence on how to see through the disguises of answers or beliefs or statements, that don't answer or say or mean anything.</p>",
+        "articles": [
+          "http://lesswrong.com/lw/ip/fake_explanations/",
+          "http://lesswrong.com/lw/iq/guessing_the_teachers_password/",
+          "http://lesswrong.com/lw/ir/science_as_attire/",
+          "http://lesswrong.com/lw/is/fake_causality/",
+          "http://lesswrong.com/lw/it/semantic_stopsigns/",
+          "http://lesswrong.com/lw/iu/mysterious_answers_to_mysterious_questions/",
+          "http://lesswrong.com/lw/iv/the_futility_of_emergence/",
+          "http://lesswrong.com/lw/ix/say_not_complexity/",
+          "http://lesswrong.com/lw/iw/positive_bias_look_into_the_dark/",
+          "http://lesswrong.com/lw/iy/my_wild_and_reckless_youth/",
+          "http://lesswrong.com/lw/iz/failing_to_learn_from_history/",
+          "http://lesswrong.com/lw/j0/making_history_available/",
+          "http://lesswrong.com/lw/j2/explainworshipignore/",
+          "http://lesswrong.com/lw/j3/science_as_curiositystopper/",
+          "http://lesswrong.com/lw/la/truly_part_of_you/"
+        ]
+      }
     ]
   },
   {
-    "title": "Mysterious Answers to Mysterious Questions",
-    "description": "<p>A sequence on how to see through the disguises of answers or beliefs or statements, that don't answer or say or mean anything.</p>",
-    "articles": [
-      "http://lesswrong.com/lw/i3/making_beliefs_pay_rent_in_anticipated_experiences/",
-      "http://lesswrong.com/lw/i4/belief_in_belief/",
-      "http://lesswrong.com/lw/i5/bayesian_judo/",
-      "http://lesswrong.com/lw/i6/professing_and_cheering/",
-      "http://lesswrong.com/lw/i7/belief_as_attire/",
-      "http://lesswrong.com/lw/ia/focus_your_uncertainty/",
-      "http://lesswrong.com/lw/ic/the_virtue_of_narrowness/",
-      "http://lesswrong.com/lw/if/your_strength_as_a_rationalist/",
-      "http://lesswrong.com/lw/ih/absence_of_evidence_is_evidence_of_absence/",
-      "http://lesswrong.com/lw/ii/conservation_of_expected_evidence/",
-      "http://lesswrong.com/lw/il/hindsight_bias/",
-      "http://lesswrong.com/lw/im/hindsight_devalues_science/",
-      "http://lesswrong.com/lw/ip/fake_explanations/",
-      "http://lesswrong.com/lw/iq/guessing_the_teachers_password/",
-      "http://lesswrong.com/lw/ir/science_as_attire/",
-      "http://lesswrong.com/lw/is/fake_causality/",
-      "http://lesswrong.com/lw/it/semantic_stopsigns/",
-      "http://lesswrong.com/lw/iu/mysterious_answers_to_mysterious_questions/",
-      "http://lesswrong.com/lw/iv/the_futility_of_emergence/",
-      "http://lesswrong.com/lw/ix/say_not_complexity/",
-      "http://lesswrong.com/lw/iw/positive_bias_look_into_the_dark/",
-      "http://lesswrong.com/lw/iy/my_wild_and_reckless_youth/",
-      "http://lesswrong.com/lw/iz/failing_to_learn_from_history/",
-      "http://lesswrong.com/lw/j0/making_history_available/",
-      "http://lesswrong.com/lw/j2/explainworshipignore/",
-      "http://lesswrong.com/lw/j3/science_as_curiositystopper/",
-      "http://lesswrong.com/lw/jb/applause_lights/",
-      "http://lesswrong.com/lw/la/truly_part_of_you/",
-      "http://lesswrong.com/lw/wb/chaotic_inversion/"
+    "title": "Interlude",
+    "articles": ["http://yudkowsky.net/rational/the-simple-truth"]
+  },
+  {
+    "title": "How To Actually Change Your Mind",
+    "description": "<p>A sequence on the ultra-high-level penultimate technique of rationality: actually updating on evidence.</p>\n<p>(Organized into eight subsequences.)</p>",
+    "subsequences": [
+      {
+        "title": "Politics is the Mind-Killer",
+        "description": "<p>A sequence on the various ways that politics damages our sanity — including, of course, making it harder to change our minds on political issues.</p>",
+        "articles": [
+          "http://lesswrong.com/lw/gw/politics_is_the_mindkiller/",
+          "http://lesswrong.com/lw/gz/policy_debates_should_not_appear_onesided/",
+          "http://lesswrong.com/lw/h1/the_scales_of_justice_the_notebook_of_rationality/",
+          "http://lesswrong.com/lw/hz/correspondence_bias/",
+          "http://lesswrong.com/lw/i0/are_your_enemies_innately_evil/",
+          "http://lesswrong.com/lw/lw/reversed_stupidity_is_not_intelligence/",
+          "http://lesswrong.com/lw/lx/argument_screens_off_authority/",
+          "http://lesswrong.com/lw/ly/hug_the_query/",
+          "http://lesswrong.com/lw/jc/rationality_and_the_english_language/",
+          "http://lesswrong.com/lw/jd/human_evil_and_muddled_thinking/"
+        ]
+      },
+      {
+        "title": "Death Spirals and the Cult Attractor",
+        "description": "<p>A sequence on two of the huger obstacles, the affective death spiral and the cultishness attractor.</p>\n<p>Affective death spirals are positive feedback loop caused by the halo effect: Positive characteristics perceptually correlate, so the more nice things we say about X, the more additional nice things we're likely to believe about X.</p>\n<p>Cultishness is an empirical attractor in human groups, roughly an affective death spiral, plus peer pressure and outcasting behavior, plus (quite often) defensiveness around something believed to have been perfected.</p>",
+        "articles": [
+          "http://lesswrong.com/lw/lg/the_affect_heuristic/",
+          "http://lesswrong.com/lw/lh/evaluability_and_cheap_holiday_shopping/",
+          "http://lesswrong.com/lw/li/unbounded_scales_huge_jury_awards_futurism/",
+          "http://lesswrong.com/lw/lj/the_halo_effect/",
+          "http://lesswrong.com/lw/lk/superhero_bias/",
+          "http://lesswrong.com/lw/ll/mere_messiahs/",
+          "http://lesswrong.com/lw/lm/affective_death_spirals/",
+          "http://lesswrong.com/lw/ln/resist_the_happy_death_spiral/",
+          "http://lesswrong.com/lw/lo/uncritical_supercriticality/",
+          "http://lesswrong.com/lw/lr/evaporative_cooling_of_group_beliefs/",
+          "http://lesswrong.com/lw/ls/when_none_dare_urge_restraint/",
+          "http://lesswrong.com/lw/lt/the_robbers_cave_experiment/",
+          "http://lesswrong.com/lw/lv/every_cause_wants_to_be_a_cult/",
+          "http://lesswrong.com/lw/lz/guardians_of_the_truth/",
+          "http://lesswrong.com/lw/m0/guardians_of_the_gene_pool/",
+          "http://lesswrong.com/lw/m1/guardians_of_ayn_rand/",
+          "http://lesswrong.com/lw/m4/two_cult_koans/",
+          "http://lesswrong.com/lw/m9/aschs_conformity_experiment/",
+          "http://lesswrong.com/lw/ma/on_expressing_your_concerns/",
+          "http://lesswrong.com/lw/mb/lonely_dissent/",
+          "http://lesswrong.com/lw/md/cultish_countercultishness/"
+        ]
+      },
+      {
+        "title": "Seeing with Fresh Eyes",
+        "description": "<p>A sequence on the incredibly difficult feat of getting your brain to actually think about something, instead of instantly stopping on the first thought that comes to mind.</p>\n<p>This is sometimes referred to as \"thinking outside the box\" by people who, for your convenience, will go on to helpfully point out exactly where \"outside the box\" is located. The Less Wrong version is called \"thinking outside the 'Outside the Box' box\". Isn't it funny how nonconformists all dress the same...</p>",
+        "articles": [
+          "http://lesswrong.com/lw/j7/anchoring_and_adjustment/",
+          "http://lesswrong.com/lw/k3/priming_and_contamination/",
+          "http://lesswrong.com/lw/k4/do_we_believe_everything_were_told/",
+          "http://lesswrong.com/lw/k5/cached_thoughts/",
+          "http://lesswrong.com/lw/k6/the_outside_the_box_box/",
+          "http://lesswrong.com/lw/k7/original_seeing/",
+          "http://lesswrong.com/lw/j1/stranger_than_history/",
+          "http://lesswrong.com/lw/k9/the_logical_fallacy_of_generalization_from/",
+          "http://lesswrong.com/lw/k8/how_to_seem_and_be_deep/",
+          "http://lesswrong.com/lw/jx/we_change_our_minds_less_often_than_we_think/",
+          "http://lesswrong.com/lw/ka/hold_off_on_proposing_solutions/",
+          "http://lesswrong.com/lw/s3/the_genetic_fallacy/"
+        ]
+      },
+      {
+        "title": "Against Rationalization",
+        "articles": [
+          "http://lesswrong.com/lw/he/knowing_about_biases_can_hurt_people/",
+          "http://lesswrong.com/lw/ij/update_yourself_incrementally/",
+          "http://lesswrong.com/lw/ik/one_argument_against_an_army/",
+          "http://lesswrong.com/lw/js/the_bottom_line/",
+          "http://lesswrong.com/lw/jt/what_evidence_filtered_evidence/",
+          "http://lesswrong.com/lw/ju/rationalization/",
+          "http://lesswrong.com/lw/jw/a_rational_argument/",
+          "http://lesswrong.com/lw/jy/avoiding_your_beliefs_real_weak_points/",
+          "http://lesswrong.com/lw/km/motivated_stopping_and_motivated_continuation/",
+          "http://lesswrong.com/lw/kq/fake_justification/",
+          "http://lesswrong.com/lw/wj/is_that_your_true_rejection/",
+          "http://lesswrong.com/lw/uw/entangled_truths_contagious_lies/",
+          "http://lesswrong.com/lw/9a/of_lies_and_black_swan_blowups/",
+          "http://lesswrong.com/lw/uy/dark_side_epistemology/"
+        ]
+      },
+      {
+        "title": "Against Doublethink",
+        "articles": [
+          "http://lesswrong.com/lw/k0/singlethink/",
+          "http://lesswrong.com/lw/je/doublethink_choosing_to_be_biased/",
+          "http://lesswrong.com/lw/r/no_really_ive_deceived_myself/",
+          "http://lesswrong.com/lw/s/belief_in_selfdeception/",
+          "http://lesswrong.com/lw/1f/moores_paradox/",
+          "http://lesswrong.com/lw/1o/dont_believe_youll_selfdeceive/"
+        ]
+      },
+      {
+        "title": "Overly Convenient Excuses",
+        "articles": [
+          "http://lesswrong.com/lw/gq/the_proper_use_of_humility/",
+          "http://lesswrong.com/lw/hu/the_third_alternative/",
+          "http://lesswrong.com/lw/ml/but_theres_still_a_chance_right/",
+          "http://lesswrong.com/lw/mm/the_fallacy_of_gray/",
+          "http://lesswrong.com/lw/mn/absolute_authority/",
+          "http://lesswrong.com/lw/jr/how_to_convince_me_that_2_2_3/",
+          "http://lesswrong.com/lw/mo/infinite_certainty/",
+          "http://lesswrong.com/lw/mp/0_and_1_are_not_probabilities/"
+        ]
+      },
+      {
+        "title": "Letting Go",
+        "articles": [
+          "http://lesswrong.com/lw/i9/the_importance_of_saying_oops/",
+          "http://lesswrong.com/lw/j8/the_crackpot_offer/",
+          "http://lesswrong.com/lw/gx/just_lose_hope_already/",
+          "http://lesswrong.com/lw/ib/the_proper_use_of_doubt/",
+          "http://lesswrong.com/lw/id/you_can_face_reality/",
+          "http://lesswrong.com/lw/jz/the_meditation_on_curiosity/",
+          "http://lesswrong.com/lw/k1/no_one_can_exempt_you_from_rationalitys_laws/",
+          "http://lesswrong.com/lw/o4/leave_a_line_of_retreat/",
+          "http://lesswrong.com/lw/ur/crisis_of_faith/",
+          "http://lesswrong.com/lw/us/the_ritual/"
+        ]
+      }
     ]
+  },
+  {
+    "title":"The Power of Intelligence",
+    "articles":["http://yudkowsky.net/singularity/power"]
   },
   {
     "title": "A Human's Guide to Words",
@@ -81,155 +236,6 @@
       "http://lesswrong.com/lw/o9/words_as_mental_paintbrush_handles/",
       "http://lesswrong.com/lw/oc/variable_question_fallacies/",
       "http://lesswrong.com/lw/od/37_ways_that_words_can_be_wrong/"
-    ]
-  },
-  {
-    "title": "How To Actually Change Your Mind",
-    "description": "<p>A sequence on the ultra-high-level penultimate technique of rationality: actually updating on evidence.</p>\n<p>(Organized into eight subsequences.)</p>",
-    "subsequences": [
-      {
-        "title": "Politics is the Mind-Killer",
-	"description": "<p>A sequence on the various ways that politics damages our sanity — including, of course, making it harder to change our minds on political issues.</p>",
-	"articles": [
-          "http://lesswrong.com/lw/gt/a_fable_of_science_and_politics/",
-          "http://lesswrong.com/lw/gw/politics_is_the_mindkiller/",
-          "http://lesswrong.com/lw/gz/policy_debates_should_not_appear_onesided/",
-          "http://lesswrong.com/lw/h1/the_scales_of_justice_the_notebook_of_rationality/",
-          "http://lesswrong.com/lw/hz/correspondence_bias/",
-          "http://lesswrong.com/lw/i0/are_your_enemies_innately_evil/",
-          "http://lesswrong.com/lw/lt/the_robbers_cave_experiment/",
-          "http://lesswrong.com/lw/lw/reversed_stupidity_is_not_intelligence/",
-          "http://lesswrong.com/lw/lx/argument_screens_off_authority/",
-          "http://lesswrong.com/lw/ly/hug_the_query/",
-          "http://lesswrong.com/lw/jc/rationality_and_the_english_language/",
-          "http://lesswrong.com/lw/m2/the_litany_against_gurus/",
-          "http://lesswrong.com/lw/m3/politics_and_awful_art/",
-          "http://lesswrong.com/lw/m5/false_laughter/",
-          "http://lesswrong.com/lw/jd/human_evil_and_muddled_thinking/"
-	]
-      },
-      {
-        "title": "Death Spirals and the Cult Attractor",
-	"description": "<p>A subsequence of <em>How to Actually Change Your Mind</em> on two of the huger obstacles, the affective death spiral and the cultishness attractor.</p>\n<p>Affective death spirals are positive feedback loop caused by the halo effect: Positive characteristics perceptually correlate, so the more nice things we say about X, the more additional nice things we're likely to believe about X.</p>\n<p>Cultishness is an empirical attractor in human groups, roughly an affective death spiral, plus peer pressure and outcasting behavior, plus (quite often) defensiveness around something believed to have been perfected.</p>",
-	"articles": [
-          "http://lesswrong.com/lw/lg/the_affect_heuristic/",
-          "http://lesswrong.com/lw/lh/evaluability_and_cheap_holiday_shopping/",
-          "http://lesswrong.com/lw/li/unbounded_scales_huge_jury_awards_futurism/",
-          "http://lesswrong.com/lw/lj/the_halo_effect/",
-          "http://lesswrong.com/lw/lk/superhero_bias/",
-          "http://lesswrong.com/lw/ll/mere_messiahs/",
-          "http://lesswrong.com/lw/lm/affective_death_spirals/",
-          "http://lesswrong.com/lw/ln/resist_the_happy_death_spiral/",
-          "http://lesswrong.com/lw/lo/uncritical_supercriticality/",
-          "http://lesswrong.com/lw/lr/evaporative_cooling_of_group_beliefs/",
-          "http://lesswrong.com/lw/ls/when_none_dare_urge_restraint/",
-          "http://lesswrong.com/lw/lt/the_robbers_cave_experiment/",
-          "http://lesswrong.com/lw/lv/every_cause_wants_to_be_a_cult/",
-          "http://lesswrong.com/lw/lz/guardians_of_the_truth/",
-          "http://lesswrong.com/lw/m0/guardians_of_the_gene_pool/",
-          "http://lesswrong.com/lw/m1/guardians_of_ayn_rand/",
-          "http://lesswrong.com/lw/m2/the_litany_against_gurus/",
-          "http://lesswrong.com/lw/m4/two_cult_koans/",
-          "http://lesswrong.com/lw/m9/aschs_conformity_experiment/",
-          "http://lesswrong.com/lw/mb/lonely_dissent/",
-          "http://lesswrong.com/lw/md/cultish_countercultishness/"
-	]
-      },
-      {
-        "title": "Seeing with Fresh Eyes",
-	"description": "<p>A sequence on the incredibly difficult feat of getting your brain to actually think about something, instead of instantly stopping on the first thought that comes to mind.</p>\n<p>This is sometimes referred to as \"thinking outside the box\" by people who, for your convenience, will go on to helpfully point out exactly where \"outside the box\" is located. The Less Wrong version is called \"thinking outside the 'Outside the Box' box\". Isn't it funny how nonconformists all dress the same...</p>",
-	"articles": [
-          "http://lesswrong.com/lw/j7/anchoring_and_adjustment/",
-          "http://lesswrong.com/lw/k3/priming_and_contamination/",
-          "http://lesswrong.com/lw/k4/do_we_believe_everything_were_told/",
-          "http://lesswrong.com/lw/k5/cached_thoughts/",
-          "http://lesswrong.com/lw/k6/the_outside_the_box_box/",
-          "http://lesswrong.com/lw/k7/original_seeing/",
-          "http://lesswrong.com/lw/k9/the_logical_fallacy_of_generalization_from/",
-          "http://lesswrong.com/lw/k8/how_to_seem_and_be_deep/",
-          "http://lesswrong.com/lw/jx/we_change_our_minds_less_often_than_we_think/",
-          "http://lesswrong.com/lw/ka/hold_off_on_proposing_solutions/",
-          "http://lesswrong.com/lw/m9/aschs_conformity_experiment/",
-          "http://lesswrong.com/lw/ma/on_expressing_your_concerns/",
-          "http://lesswrong.com/lw/mb/lonely_dissent/",
-          "http://lesswrong.com/lw/s3/the_genetic_fallacy/"
-	]
-      },
-      {
-        "title": "Noticing Confusion",
-	"description": "<p>(Heavy overlap with <em>Mysterious Answers to Mysterious Questions</em>.)</p>",
-	"articles": [
-	  "http://lesswrong.com/lw/if/your_strength_as_a_rationalist/",
-	  "http://lesswrong.com/lw/ih/absence_of_evidence_is_evidence_of_absence/",
-	  "http://lesswrong.com/lw/il/hindsight_bias/",
-	  "http://lesswrong.com/lw/im/hindsight_devalues_science/",
-	  "http://lesswrong.com/lw/iw/positive_bias_look_into_the_dark/"
-	]
-      },
-      {
-        "title": "Against Rationalization",
-	"articles": [
-          "http://lesswrong.com/lw/he/knowing_about_biases_can_hurt_people/",
-          "http://lesswrong.com/lw/ij/update_yourself_incrementally/",
-          "http://lesswrong.com/lw/ik/one_argument_against_an_army/",
-          "http://lesswrong.com/lw/js/the_bottom_line/",
-          "http://lesswrong.com/lw/jt/what_evidence_filtered_evidence/",
-          "http://lesswrong.com/lw/ju/rationalization/",
-          "http://lesswrong.com/lw/jw/a_rational_argument/",
-          "http://lesswrong.com/lw/jy/avoiding_your_beliefs_real_weak_points/",
-          "http://lesswrong.com/lw/km/motivated_stopping_and_motivated_continuation/",
-          "http://lesswrong.com/lw/ko/a_case_study_of_motivated_continuation/",
-          "http://lesswrong.com/lw/kq/fake_justification/",
-          "http://lesswrong.com/lw/kz/fake_optimization_criteria/",
-          "http://lesswrong.com/lw/wj/is_that_your_true_rejection/",
-          "http://lesswrong.com/lw/uw/entangled_truths_contagious_lies/",
-          "http://lesswrong.com/lw/9a/of_lies_and_black_swan_blowups/",
-          "http://lesswrong.com/lw/uy/dark_side_epistemology/",
-          "http://lesswrong.com/lw/57/the_sacred_mundane/"
-	]
-      },
-      {
-        "title": "Against Doublethink",
-	"articles": [
-          "http://lesswrong.com/lw/k0/singlethink/",
-          "http://lesswrong.com/lw/je/doublethink_choosing_to_be_biased/",
-          "http://lesswrong.com/lw/r/no_really_ive_deceived_myself/",
-          "http://lesswrong.com/lw/s/belief_in_selfdeception/",
-          "http://lesswrong.com/lw/1f/moores_paradox/",
-          "http://lesswrong.com/lw/1o/dont_believe_youll_selfdeceive/"
-	]
-      },
-      {
-        "title": "Overly Convenient Excuses",
-	"articles": [
-          "http://lesswrong.com/lw/gq/the_proper_use_of_humility/",
-          "http://lesswrong.com/lw/hu/the_third_alternative/",
-          "http://lesswrong.com/lw/19m/privileging_the_hypothesis/",
-          "http://lesswrong.com/lw/ml/but_theres_still_a_chance_right/",
-          "http://lesswrong.com/lw/mm/the_fallacy_of_gray/",
-          "http://lesswrong.com/lw/mn/absolute_authority/",
-          "http://lesswrong.com/lw/jr/how_to_convince_me_that_2_2_3/",
-          "http://lesswrong.com/lw/mo/infinite_certainty/",
-          "http://lesswrong.com/lw/mp/0_and_1_are_not_probabilities/"
-	]
-      },
-      {
-        "title": "Letting Go",
-	"articles": [
-          "http://lesswrong.com/lw/hp/feeling_rational/",
-          "http://lesswrong.com/lw/i9/the_importance_of_saying_oops/",
-          "http://lesswrong.com/lw/j8/the_crackpot_offer/",
-          "http://lesswrong.com/lw/gx/just_lose_hope_already/",
-          "http://lesswrong.com/lw/ib/the_proper_use_of_doubt/",
-          "http://lesswrong.com/lw/id/you_can_face_reality/",
-          "http://lesswrong.com/lw/jz/the_meditation_on_curiosity/",
-          "http://lesswrong.com/lw/nb/something_to_protect/",
-          "http://lesswrong.com/lw/k1/no_one_can_exempt_you_from_rationalitys_laws/",
-          "http://lesswrong.com/lw/o4/leave_a_line_of_retreat/",
-          "http://lesswrong.com/lw/ur/crisis_of_faith/",
-          "http://lesswrong.com/lw/us/the_ritual/"
-	]
-      }
     ]
   },
   {
