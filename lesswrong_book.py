@@ -1,6 +1,7 @@
 #! /usr/bin/python
 ## Hey, Python: encoding: utf-8
 #
+# Copyright (c) 2014-2015 Tony Boyles (AABoyles@gmail.com)
 # Copyright (c) 2012-2013 Dato Simó (dato@net.com.org.es)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -16,69 +17,20 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-"""Generate a PDF document out of Less Wrong sequences (using PrinceXML).
+"""Generate an ebook from the Less Wrong sequences.
 
 Software requirements:
-
   - Python            (tested only with 2.7)
-  - PrinceXML         (http://princexml.com)
   - BeautifulSoup v4  (easy_install BeautifulSoup4)
   - lxml              (easy_install lxml)
-
-See ParseArgs() or --help for options.
 """
 
-# TODO [important]: get the PDF output reviewed / get feedback on any glaring
-# mistakes or omissions.
-
 # TODO [important]: download images.
-
-# TODO: get rid of multiple <a id="more"> elements (they produce innocuous
-# warnings from PrinceXML).
-
-# TODO: the following articles appear in more than one sequence; if that's
-# correct, their ids need to be different (at the moment Prince complains); if
-# it's not correct or desired, apply the suitable fix.
-#
-#  /lw/lt/the_robbers_cave_experiment:
-#  /lw/m2/the_litany_against_gurus:
-#    #1: Politics is the Mind-Killer
-#    #2: Death Spirals and the Cult Attractor
-#
-#  /lw/m9/aschs_conformity_experiment:
-#    #1: Death Spirals and the Cult Attractor
-#    #2: Seeing with Fresh Eyes
-#
-#  /lw/if/your_strength_as_a_rationalist:
-#  /lw/ih/absence_of_evidence_is_evidence_of_absence:
-#  /lw/il/hindsight_bias:
-#  /lw/im/hindsight_devalues_science:
-#  /lw/iw/positive_bias_look_into_the_dark:
-#    #1: Mysterious Answers to Mysterious Questions
-#    #2: Noticing Confusion
-#
-#  /lw/jr/how_to_convince_me_that_2_2_3:
-#    #1: Map and Territory
-#    #2: Overly Convenient Excuses
-#
-#  /lw/s3/the_genetic_fallacy:
-#    #1: Seeing with Fresh Eyes
-#    #2: The Methaetics Sequence
 
 # TODO [maybe]: add a Table of Contents.
 
 # TODO [maybe]: differentiate somehow between "important" vs. "skippable"
 # articles (bold and italics in the sequence pages in the wiki, respectively).
-
-# TODO [maybe]: indicate sequence prerequisites somewhere?
-
-# TODO: handle the sequence for A Human's Guide to Words somehow. It's the last
-# article; perhaps put it _before_ the first article proper, if I can manage
-# links to work ok. (N.B.: Other sequences like The Fun Theory and The Craft and
-# the Community also have similar guides.)
-
-# TODO [maybe]: add missing sequences (Quantum Physics, Fun Theory, The Craft
-# and The Community, Advance Epistemology 101).
 
 # TODO [maybe]: add most referenced articles (not already part of the sequences)
 # in an appendix. (See 'referenced.txt'.)
@@ -87,7 +39,7 @@ import argparse
 import atexit
 import bs4
 import calendar
-import csv
+from ebooklib import epub
 import errno
 import HTMLParser
 import httplib
@@ -105,18 +57,12 @@ import time
 import urllib
 import urllib2
 import urlparse
-
+import uuid
 from xml.etree import ElementTree as ET
 from xml.sax import saxutils
 
-try:
-  from smartypants import smartypants  # Optional; easy_install smartypants
-except ImportError:
-  smartypants = lambda text, attr="1": text
-
 class Error(Exception):
   "Base exception for this module."
-
 
 class CssClass(object):
   TITLE = "title"
@@ -137,7 +83,8 @@ class LessWrongBook(object):
   def Run(self):
     self.args = self.ParseArgs()
     logging.basicConfig(level=logging.INFO,
-                        format="%(levelname)s: %(message)s", stream=sys.stdout)
+                        format="%(levelname)s: %(message)s",
+                        stream=sys.stdout)
 
     self.ParseConfigs()
     self.DownloadHtml()
@@ -158,24 +105,61 @@ class LessWrongBook(object):
       style_kwargs.update({"rel": "stylesheet", "type": "text/css"})
       head.append(doc.new_tag("link", **style_kwargs))
 
-    # The sequences.
-
     for seq in self.seqs:
       body.append(self.SequenceToHtml(seq))
 
     # HTML out.
-    with tempfile.NamedTemporaryFile(dir=".", prefix="lesswrong-seq_",
-                                     suffix=".html", delete=False) as tmp:
+    with tempfile.NamedTemporaryFile(dir=".",
+                                     prefix="lesswrong-seq_",
+                                     suffix=".html",
+                                     delete=False) as tmp:
       atexit.register(os.unlink, tmp.name)
       tmp.write(doc.encode("UTF-8"))
 
     if self.args.save_html:
+      
       html_file = self.args.save_html
       shutil.copy(tmp.name, html_file)
     else:
       html_file = tmp.name
 
-    subprocess.call([self.args.prince, html_file, self.args.output])
+    #subprocess.call([self.args.prince, html_file, self.args.output])
+
+    self.book = epub.EpubBook()
+
+    # set metadata
+    self.book.set_identifier(str(uuid.uuid4()))
+    self.book.set_title('The Sequences')
+    self.book.set_language('en')
+    self.book.add_author('Eliezer Yudkowsky')
+
+    # create chapter
+    c1 = epub.EpubHtml(title='Intro', file_name='temp.html', lang='en')
+
+    # add chapter
+    book.add_item(c1)
+
+    # define Table Of Contents
+    book.toc = (
+        epub.Link('temp.html', 'Introduction', 'intro'),
+                 (epub.Section('Simple book'),(c1, )),
+                 (epub.Section('Simple book'),(c1, )))
+
+    # add default NCX and Nav file
+    book.add_item(epub.EpubNcx())
+    book.add_item(epub.EpubNav())
+
+    # define CSS style
+    nav_css = epub.EpubItem(uid="style_nav", file_name="style/nav.css", media_type="text/css", content=style)
+
+    # add CSS file
+    book.add_item(nav_css)
+
+    # basic spine
+    book.spine = ['nav', c1]
+
+    # write to the file
+    epub.write_epub('test.epub', book, {})
 
   @staticmethod
   def ParseArgs():
@@ -247,10 +231,6 @@ Please see below for the full listing of options.""")
               "(default: 'lw-html.css', currently empty)"))
 
     parser.add_argument(
-        "--prince", metavar="PATH", default="prince",
-        help="path to the PrinceXML executable (default: 'prince')")
-
-    parser.add_argument(
         "--download-only", action="store_true", default=False,
         help="download articles into the HTML cache directory, do nothing more")
 
@@ -263,9 +243,6 @@ Please see below for the full listing of options.""")
         "--check-last-modified", action="store_true",
         help="check Last-Modified header when using items from the HTML cache")
 
-    # Some links to Overcoming Bias are permanent redirects to articles in Less
-    # Wrong; we want to use the Less Wrong ones because that allows to use them
-    # as internal cross-references, rather than external links.
     parser.add_argument(
         "--urlmap", metavar="PATH", default="urlmap.json",
         help="permanent redirects for URLs found in the articles")
@@ -286,9 +263,6 @@ Please see below for the full listing of options.""")
     with open(self.args.sequence_file) as sf:
       self.seqs = json.load(sf)
       self.url_ids = {}
-
-    with open(self.args.toc) as toc:
-      self.toc = csv.reader(toc, delimiter='	')
 
     def _DoSequenceIds(seq_obj):
       for url in seq_obj["articles"]:
@@ -334,8 +308,6 @@ Please see below for the full listing of options.""")
 
   def _DownloadUrl(self, url, path):
     if self._GetFix(url, "no-xml-download") is None:
-      # For LessWrong articles under /lw, we retrieve their XML version, because
-      # later on it's easier to extract the contents from that version.
       url = os.path.join(url, ".xml")
 
     try:
@@ -356,7 +328,6 @@ Please see below for the full listing of options.""")
         else:
           logging.info("will re-download %s, it was modified", url)
 
-    print(url)
     data = urllib2.urlopen(url).read()
     with open(path, "w") as f:
       f.write(data)
@@ -395,19 +366,16 @@ Please see below for the full listing of options.""")
     return seq
 
   def _CreateSeqDiv(self, seq_obj, kind):
-    env = jinja2.Environment(loader=jinja2.FileSystemLoader(os.getcwd()))
-    #template = env.get_template(kind)
-
     soup = bs4.BeautifulSoup("")
     seq = soup.new_tag("div")
     seq["class"] = kind
 
     seq_h = soup.new_tag("h2")
-    seq_h.string = smartypants(seq_obj["title"])
+    seq_h.string = seq_obj["title"]
     seq.append(seq_h)
 
     if "description" in seq_obj:
-      desc_soup = bs4.BeautifulSoup(smartypants(seq_obj["description"]), "html.parser")
+      desc_soup = bs4.BeautifulSoup(seq_obj["description"], "html.parser")
       seq_desc = soup.new_tag("div")
       seq_desc["class"] = CssClass.DESCRIPTION
       for elem in desc_soup.children:
@@ -427,7 +395,7 @@ Please see below for the full listing of options.""")
 
       if parser_type == "lw-xml":
         item = ET.fromstring(contents).find("./channel/item")
-        title = smartypants(item.find("title").text)
+        title = item.find("title").text
         html_contents = item.find("description").text
 
       elif parser_type == "lw-html":
@@ -456,7 +424,7 @@ Please see below for the full listing of options.""")
         raise Error("unknown special parser %r" % parser_type)
 
       try:
-        soup = bs4.BeautifulSoup(smartypants(html_contents), "lxml")
+        soup = bs4.BeautifulSoup(html_contents, "lxml")
       except HTMLParser.HTMLParseError, e:
         print ">>> Failed source:"
         print html_contents
@@ -494,9 +462,6 @@ Please see below for the full listing of options.""")
   def _MassageArticleText(self, article):
     soup = bs4.BeautifulSoup("")  # For creating tags below.
 
-    # Mark with a class the "Part of the Foo sequence" and "Next post:" blurbs,
-    # so that the print CSS can avoid displaying them (they are not needed for
-    # the PDF version).
     for p in article.select('p[style^="text-align:"]'):
       if re.search(r"^(Part of.*sequence|(Next|Previous) post:|"
                    r"\((end|start) of.*sequence)", p.text, re.IGNORECASE):
@@ -510,14 +475,10 @@ Please see below for the full listing of options.""")
         pass
       else:
         if href.startswith("/lw/"):
-          # Use the full URL so as to be able to find it in self.url_ids later
-          # on, or have the external link work normally otherwise.
           href = a["href"] = "http://lesswrong.com" + href
         if re.search(r"^https?://lesswrong\.com/lw/[^/]+/[^/]+$", href):
-          # Canonicalize LW article URLs by appending a missing trailing slash.
           href += "/"
         if href in self.urlmap:
-          # Use the redirection so as to be able to find it in self.url_ids.
           href = a["href"] = self.urlmap[href]
         if href in self.url_ids:
           a["href"] = "#" + self.url_ids[href]
@@ -530,9 +491,6 @@ Please see below for the full listing of options.""")
         footnote_link["href"] = a["href"]
         a.insert_after(footnote_link)
 
-    # Text in white are spoilers; mark them with a class for formatting in CSS.
-    # I cannot seem to get select('span[style="color: #ffffff"]') to work, so I
-    # check for the color with a regular expression.
     white_span_re = re.compile(
         r"^color:\s*(#(?:fff){1,2}|white)", re.IGNORECASE)
 
@@ -548,7 +506,6 @@ def _MkdirP(directory):
   except OSError, e:
     if e.errno != errno.EEXIST:
       raise
-
 
 def _GetLastModifiedStamp(url):
   """Return a Unix timestamp for the Last-Modified header of a URL."""
@@ -566,7 +523,6 @@ def _GetLastModifiedStamp(url):
     time_str = headers["last-modified"]
     time_tuple = time.strptime(time_str, "%a, %d %b %Y %H:%M:%S %Z")
     return calendar.timegm(time_tuple)  # XXX Asumes UTC.
-
 
 if __name__ == '__main__':
   LessWrongBook().Run()
