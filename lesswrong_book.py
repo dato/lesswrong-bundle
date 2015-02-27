@@ -113,53 +113,16 @@ class LessWrongBook(object):
                                      prefix="lesswrong-seq_",
                                      suffix=".html",
                                      delete=False) as tmp:
-      atexit.register(os.unlink, tmp.name)
+      #atexit.register(os.unlink, tmp.name)
       tmp.write(doc.encode("UTF-8"))
 
     if self.args.save_html:
-      
       html_file = self.args.save_html
       shutil.copy(tmp.name, html_file)
     else:
       html_file = tmp.name
 
-    #subprocess.call([self.args.prince, html_file, self.args.output])
-
-    self.book = epub.EpubBook()
-
-    # set metadata
-    self.book.set_identifier(str(uuid.uuid4()))
-    self.book.set_title('The Sequences')
-    self.book.set_language('en')
-    self.book.add_author('Eliezer Yudkowsky')
-
-    # create chapter
-    c1 = epub.EpubHtml(title='Intro', file_name='temp.html', lang='en')
-
-    # add chapter
-    book.add_item(c1)
-
-    # define Table Of Contents
-    book.toc = (
-        epub.Link('temp.html', 'Introduction', 'intro'),
-                 (epub.Section('Simple book'),(c1, )),
-                 (epub.Section('Simple book'),(c1, )))
-
-    # add default NCX and Nav file
-    book.add_item(epub.EpubNcx())
-    book.add_item(epub.EpubNav())
-
-    # define CSS style
-    nav_css = epub.EpubItem(uid="style_nav", file_name="style/nav.css", media_type="text/css", content=style)
-
-    # add CSS file
-    book.add_item(nav_css)
-
-    # basic spine
-    book.spine = ['nav', c1]
-
-    # write to the file
-    epub.write_epub('test.epub', book, {})
+    subprocess.call([self.args.prince, html_file, self.args.output])
 
   @staticmethod
   def ParseArgs():
